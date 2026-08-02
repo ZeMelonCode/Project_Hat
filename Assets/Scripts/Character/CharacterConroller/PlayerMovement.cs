@@ -6,13 +6,17 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerInputReader inputReader;
-    [SerializeField] private Transform cameraTransform; // Drag your PlayerCamera here
+    [SerializeField] private Transform cameraTransform;
 
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpHeight = 1.6f;
     [SerializeField] private float gravity = -18f;
     [SerializeField] private float rotationSpeed = 15f;
+
+    [Header("Coyote Time")]
+    [SerializeField] private float coyoteTime = 0.15f;   
+    private float coyoteTimeCounter;
 
     private CharacterController controller;
     private Vector3 velocity;
@@ -27,8 +31,17 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = controller.isGrounded;
 
-        if (isGrounded && velocity.y < 0)
-            velocity.y = -2f;
+        // Coyote time logic
+        if (isGrounded)
+        {
+            coyoteTimeCounter = coyoteTime;
+            if (velocity.y < 0)
+                velocity.y = -2f;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
 
         // ----- Movement (relative to camera) -----
         Vector3 inputDirection = new Vector3(inputReader.MoveInput.x, 0f, inputReader.MoveInput.y).normalized;
@@ -45,10 +58,11 @@ public class PlayerMovement : MonoBehaviour
         // ----- Aim / Face Direction (Mouse) -----
         HandleAiming();
 
-        // ----- Jump -----
-        if (inputReader.JumpPressed && isGrounded)
+        // ----- Jump (with coyote time) -----
+        if (inputReader.JumpPressed && coyoteTimeCounter > 0f)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            coyoteTimeCounter = 0f; // Prevent double jumping in the window
         }
 
         // ----- Gravity -----
@@ -63,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
         if (Mouse.current == null) return;
 
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-
         Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
         Plane groundPlane = new Plane(Vector3.up, transform.position);
 
