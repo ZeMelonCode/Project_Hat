@@ -10,7 +10,7 @@ public class PlayerInteract : MonoBehaviour
     [Header("Parameters")]
     public float pickupRadius = 2.0f;
     public LayerMask interactableLayer;
-    private bool hasObject;
+    [SerializeField]private bool hasObject;
     private GameObject pickups;
     
     [SerializeField] private BaseHero heroClass;
