@@ -12,24 +12,37 @@ public class PlayerInteract : MonoBehaviour
     public LayerMask interactableLayer;
     private bool hasObject;
     private GameObject pickups;
+    
+    [SerializeField] private BaseHero heroClass;
     [SerializeField] private Transform pickupSocket;
 
     private void Update()
     {
-        if (inputReader.InteractPressed == true)
+        if (!inputReader.InteractPressed) return;
+
+        Debug.Log("trying to pickup");
+
+        if (!hasObject)
         {
-            if (hasObject == false)
+            Debug.Log("Picking up");
+            pickups = Pickup();
+
+            if (pickups != null)          // only set true if we actually got something
             {
-                pickups = Pickup();
-                hasObject = true;  
+                hasObject = true;
+                Debug.Log("Successfully picked up: " + pickups.name);
             }
-            else if(hasObject == true)
+            else
             {
-                DropOff(pickups);
+                Debug.Log("Pickup failed - nothing found");
             }
-            inputReader.ResetOneFrameInputs();
         }
-        //pickup logic here
+        else
+        {
+            DropOff(pickups);
+        }
+
+        inputReader.ResetOneFrameInputs();
     }
 
     private GameObject Pickup()
@@ -55,6 +68,11 @@ public class PlayerInteract : MonoBehaviour
             // 3. Execute pickup logic
             if (closestObject != null)
             {
+                Rigidbody rb = closestObject.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+                }
                 closestObject.transform.SetPositionAndRotation(pickupSocket.position, pickupSocket.rotation);
                 closestObject.transform.SetParent(pickupSocket);
                 Debug.Log("Picked up: " + closestObject.name);
@@ -66,6 +84,11 @@ public class PlayerInteract : MonoBehaviour
 
     void DropOff(GameObject objectToDrop)
     {
+        Rigidbody rb = objectToDrop.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
         objectToDrop.transform.SetParent(null);
         hasObject = false;
         pickups = null;
