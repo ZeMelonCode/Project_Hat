@@ -2144,13 +2144,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestHat
       objectReference: {fileID: 0}
+    - target: {fileID: 32219629379973877, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7379850138048559961, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.50231
       objectReference: {fileID: 0}
     - target: {fileID: 7379850138048559961, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.822
+      value: 1.985
       objectReference: {fileID: 0}
     - target: {fileID: 7379850138048559961, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2182,6 +2186,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7379850138048559961, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720552153763719602, guid: d32ef0b2f1a07086e882d0232708d2dc, type: 3}
+      propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

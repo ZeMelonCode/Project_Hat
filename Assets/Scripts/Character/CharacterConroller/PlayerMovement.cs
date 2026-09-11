@@ -63,13 +63,14 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             coyoteTimeCounter = 0f; // Prevent double jumping in the window
+            inputReader.ResetOneFrameInputs();
         }
 
         // ----- Gravity -----
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        inputReader.ResetOneFrameInputs();
+        
     }
 
     private void HandleAiming()

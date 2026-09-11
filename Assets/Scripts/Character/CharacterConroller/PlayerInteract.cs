@@ -19,30 +19,32 @@ public class PlayerInteract : MonoBehaviour
     private void Update()
     {
         if (!inputReader.InteractPressed) return;
-
         Debug.Log("trying to pickup");
-
+        
         if (!hasObject)
         {
             Debug.Log("Picking up");
             pickups = Pickup();
 
-            if (pickups != null)          // only set true if we actually got something
+            if (pickups)          // only set true if we actually got something
             {
                 hasObject = true;
                 Debug.Log("Successfully picked up: " + pickups.name);
+                inputReader.ResetOneFrameInputs();
             }
             else
             {
                 Debug.Log("Pickup failed - nothing found");
+                inputReader.ResetOneFrameInputs();
             }
         }
         else
         {
             DropOff(pickups);
+            inputReader.ResetOneFrameInputs();
         }
 
-        inputReader.ResetOneFrameInputs();
+        
     }
 
     private GameObject Pickup()
